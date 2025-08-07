@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace Core.GameState {
+namespace Core {
     public class MusicManager : SingletonPersistent<MusicManager> {
         [Header("Audio Source")] 
         public AudioSource musicSource;
