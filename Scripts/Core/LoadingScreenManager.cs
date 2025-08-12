@@ -1,11 +1,12 @@
 using System.Threading.Tasks;
+using TMPro;
 using UnityEngine;
 
 namespace Core {
     public class LoadingScreenManager : SingletonPersistent<LoadingScreenManager> {
         [SerializeField] private GameObject loadingScreen;
         [SerializeField] private float fadeTime = 0.3f;
-        [SerializeField] private UnityEngine.UI.Text loadingText;
+        [SerializeField] private TMP_Text loadingText;
         [SerializeField] private UnityEngine.UI.Slider progressBar;
 
         private CanvasGroup _canvasGroup;
@@ -35,7 +36,7 @@ namespace Core {
             GameEvents.OnLoadingProgressRequested -= UpdateProgress;
         }
 
-        public async Task ShowAsync() {
+        private async Task ShowAsync() {
             if (_isShowing || _isTransitioning) {
                 Debug.Log("[LoadingScreenManager] Already showing or transitioning, ignoring show request");
                 return;
@@ -66,7 +67,7 @@ namespace Core {
             await HideAsyncTask();
         }
 
-        public async Task HideAsyncTask() {
+        private async Task HideAsyncTask() {
             if (!_isShowing || _isTransitioning) {
                 Debug.Log("[LoadingScreenManager] Not showing or already transitioning, ignoring hide request");
                 return;
@@ -100,14 +101,10 @@ namespace Core {
             float elapsed = 0f;
             while (elapsed < fadeTime) {
                 elapsed += Time.deltaTime;
-                if (_canvasGroup != null) {
-                    _canvasGroup.alpha = Mathf.Lerp(from, to, elapsed / fadeTime);
-                }
+                if (_canvasGroup != null) _canvasGroup.alpha = Mathf.Lerp(from, to, elapsed / fadeTime);
                 await Task.Yield();
             }
-            if (_canvasGroup != null) {
-                _canvasGroup.alpha = to;
-            }
+            if (_canvasGroup != null) _canvasGroup.alpha = to;
         }
     }
 }

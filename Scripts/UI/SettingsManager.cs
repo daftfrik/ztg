@@ -1,14 +1,11 @@
-using UnityEngine;
-using UnityEngine.UI;
-using UnityEngine.Audio;
 using System.Collections.Generic;
+using Core;
 using TMPro;
+using UnityEngine;
+using UnityEngine.Audio;
+using UnityEngine.UI;
 
-namespace Core {
-    /// <summary>
-    /// Manages game settings like audio, graphics, and controls.
-    /// Attach this to your Settings Panel GameObject.
-    /// </summary>
+namespace UI {
     public class SettingsManager : MonoBehaviour {
         [Header("Audio Settings")]
         [SerializeField] private AudioMixer audioMixer;
@@ -145,7 +142,7 @@ namespace Core {
             UpdateVolumeText(sfxVolumeText, volume);
         }
 
-        public void SetMute(bool isMuted) {
+        private void SetMute(bool isMuted) {
             AudioListener.pause = isMuted;
         }
 
@@ -178,21 +175,23 @@ namespace Core {
         #endregion
 
         #region Gameplay Settings
-        public void SetMouseSensitivity(float sensitivity) {
+
+        private void SetMouseSensitivity(float sensitivity) {
             // You can implement this based on your input system
             if (mouseSensitivityText != null) {
                 mouseSensitivityText.text = sensitivity.ToString("F1");
             }
         }
 
-        public void SetInvertY(bool invert) {
+        private void SetInvertY(bool invert) {
             // You can implement this based on your input system
             Debug.Log($"Invert Y-axis: {invert}");
         }
         #endregion
 
         #region Save/Load Settings
-        public void SaveSettings() {
+
+        private void SaveSettings() {
             // Audio settings
             PlayerPrefs.SetFloat(MasterVolumeKey, masterVolumeSlider?.value ?? 0.75f);
             PlayerPrefs.SetFloat(MusicVolumeKey, musicVolumeSlider?.value ?? 0.75f);
@@ -213,7 +212,7 @@ namespace Core {
             Debug.Log("[SettingsManager] Settings saved!");
         }
 
-        public void LoadSettings() {
+        private void LoadSettings() {
             // Audio settings
             float masterVolume = PlayerPrefs.GetFloat(MasterVolumeKey, 0.75f);
             float musicVolume = PlayerPrefs.GetFloat(MusicVolumeKey, 0.75f);

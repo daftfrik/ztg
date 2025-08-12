@@ -13,9 +13,8 @@ namespace Core {
         private async void Start() {
             Debug.Log("[Bootstrap] Starting game initialization...");
 
-            if (showLoadingScreen) {
-                GameEvents.RequestLoadingStart("Initializing Game...");
-            }
+            if (showLoadingScreen) GameEvents.RequestLoadingStart("Initializing Game...");
+            
 
             try {
                 // Initialize persistent managers
@@ -31,9 +30,7 @@ namespace Core {
             } catch (Exception e) {
                 Debug.LogError($"Bootstrap failed: {e.Message}");
             } finally {
-                if (showLoadingScreen) {
-                    GameEvents.RequestLoadingEnd();
-                }
+                if (showLoadingScreen) GameEvents.RequestLoadingEnd();
             }
         }
 
@@ -48,10 +45,9 @@ namespace Core {
 
                 // Check if manager already exists
                 var componentType = prefab.GetComponent<MonoBehaviour>()?.GetType();
-                if (componentType != null && FindAnyObjectByType(componentType) == null) {
-                    Instantiate(prefab);
-                    Debug.Log($"[Bootstrap] Initialized {prefab.name}");
-                }
+                if (componentType == null || FindAnyObjectByType(componentType) != null) continue;
+                Instantiate(prefab);
+                Debug.Log($"[Bootstrap] Initialized {prefab.name}");
             }
         }
 
@@ -62,9 +58,8 @@ namespace Core {
             }
 
             // Only load if not already in the scene
-            if (UnityEngine.SceneManagement.SceneManager.GetActiveScene().name != initialSceneName) {
+            if (UnityEngine.SceneManagement.SceneManager.GetActiveScene().name != initialSceneName)
                 await SceneLoader.LoadSceneAsync(initialSceneName);
-            }
         }
     }
 }

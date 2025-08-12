@@ -17,12 +17,12 @@ namespace Core {
             GameEvents.OnSceneLoadRequested -= LoadScene;
         }
 
-        public async Task ChangeState(GameStateType newState) {
+        private async Task ChangeState(GameStateType newState) {
             if (newState == _currentState) return;
 
             Debug.Log($"[GameStateManager] Changing state from {_currentState} to {newState}");
             
-            var sceneName = GetSceneNameForState(newState);
+            string sceneName = GetSceneNameForState(newState);
             if (!string.IsNullOrEmpty(sceneName)) {
                 GameEvents.RequestLoadingStart($"Loading {newState}...");
                 await SceneLoader.LoadSceneAsync(sceneName);

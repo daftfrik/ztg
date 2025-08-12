@@ -64,7 +64,7 @@ namespace Core {
         }
 
         // Panel management methods
-        public void ShowPanel(string panelName) {
+        private void ShowPanel(string panelName) {
             if (!_panelDict.ContainsKey(panelName)) {
                 Debug.LogWarning($"[SceneController] Panel '{panelName}' not found!");
                 return;
